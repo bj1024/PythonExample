@@ -221,7 +221,8 @@ async def read_own_items(password:str):
     return [{"password":password,"hash": hash}]
 
 @app.post("/items/")
-async def create_item(item: Item):
+async def create_item(item: Item,current_user: User = Depends(get_current_active_user)):
+    item.description += f"\n by {current_user.username}"
     return item
 
 
