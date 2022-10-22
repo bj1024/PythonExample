@@ -1,7 +1,11 @@
+import uvicorn
+
 from typing import Union
 
 from fastapi import FastAPI
 from enum import Enum
+
+from fastapi.staticfiles import StaticFiles
 
 class ModelName(str, Enum):
     alexnet = "alexnet"
@@ -13,6 +17,8 @@ class ModelName(str, Enum):
 app = FastAPI()
 
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 async def root():
@@ -47,3 +53,6 @@ async def read_item(item_id: str, q: Union[str, None] = None, short: bool = Fals
             {"description": "This is an amazing item that has a long description"}
         )
     return item
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
