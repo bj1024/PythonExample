@@ -24,6 +24,18 @@ pip install 'passlib[bcrypt]'
 ```
 
 ```
-```
+openssl rand -hex 32
+
 
 b4158e52dd8e6c397436a49b235da89b93ee82bc9beaa82eaeffa43f3f649f9a
+
+```
+
+
+
+# sqlite(with sqlalchemy)
+
+```
+pip install sqlalchemy
+
+```
