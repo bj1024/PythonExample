@@ -11,7 +11,9 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
+# from passlib.handlers.bcrypt
 
+from passlib.hash import bcrypt
 
 class ModelName(str, Enum):
     alexnet = "alexnet"
@@ -31,7 +33,7 @@ app = FastAPI()
 
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @app.get("/")
@@ -226,8 +228,22 @@ async def create_item(item: Item,current_user: User = Depends(get_current_active
     return item
 
 
+# pyinstallerの場合、__main__ で起動される。
+# python の場合、__main__ ,mainで起動される。
 
+print(f"name = [{__name__}]")
+import sys, os
+if getattr(sys, 'frozen', False):
+    # If the application is run as a bundle, the PyInstaller bootloader
+    # extends the sys module by a flag frozen=True and sets the app
+    # path into variable _MEIPASS'.
+    application_path = sys._MEIPASS
+else:
+    application_path = os.path.dirname(os.path.abspath(__file__))
 
+print(f"application_path = [{application_path}]")
 if __name__ == "__main__":
     # uvicorn.run("main:app", host="127.0.0.1", port=8000,reload=True)
-    uvicorn.run("sql_app.main:app", host="127.0.0.1", port=8000,reload=True)
+    # uvicorn.run("sql_app.main:app", host="127.0.0.1", port=8000,reload=True)
+    # uvicorn.run("sql_app.main:app", host="127.0.0.1", port=8000, reload=False)
+    uvicorn.run("__main__:app", host="127.0.0.1", port=8000, reload=False)

@@ -59,6 +59,7 @@ class ItemUpdate(ItemBase):
 
 
 class Item(ItemBase):
+
     id: int
     owner_id: int
 
