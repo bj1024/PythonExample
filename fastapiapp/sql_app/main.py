@@ -25,6 +25,15 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     return crud.create_user(db=db, user=user)
 
+@app.put("/users/", response_model=schemas.User)
+def update_user(user: schemas.UserUpdate, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, user_id=user.id)
+    if db_user is None:
+        raise HTTPException(status_code=400, detail="user not exist.")
+    return crud.update_user(db=db, user=user)
+
+
+
 
 @app.get("/users/", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -45,6 +54,12 @@ def create_item_for_user(
     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
 ):
     return crud.create_user_item(db=db, item=item, user_id=user_id)
+
+@app.put("/users/{user_id}/items/", response_model=schemas.Item)
+def update_item_for_user(
+    user_id: int, item: schemas.ItemUpdate, db: Session = Depends(get_db)
+):
+    return crud.update_user_item(db=db,  item=item)
 
 
 @app.get("/items/", response_model=list[schemas.Item])

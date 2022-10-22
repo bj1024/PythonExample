@@ -27,6 +27,10 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
+# update用のrequest model
+class UserUpdate(BaseModel):
+    id: int
+    password: str
 
 class User(UserBase):
     id: int
@@ -47,6 +51,11 @@ class ItemBase(BaseModel):
 
 class ItemCreate(ItemBase):
     pass
+
+class ItemUpdate(ItemBase):
+    id: int
+    title: str
+    description: Union[str, None] = None
 
 
 class Item(ItemBase):
