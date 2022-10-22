@@ -19,6 +19,13 @@ class ModelName(str, Enum):
     lenet = "lenet"
 
 
+class Item(BaseModel):
+    name: str
+    description: Union[str, None] = None
+    price: float
+    tax: Union[float, None] = None
+
+
 
 app = FastAPI()
 
@@ -212,6 +219,11 @@ async def read_own_items(password:str):
     hash = get_password_hash(password)
 
     return [{"password":password,"hash": hash}]
+
+@app.post("/items/")
+async def create_item(item: Item):
+    return item
+
 
 
 
