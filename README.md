@@ -39,3 +39,9 @@ b4158e52dd8e6c397436a49b235da89b93ee82bc9beaa82eaeffa43f3f649f9a
 pip install sqlalchemy
 
 ```
+
+
+# pyinstaller
+```
+pyinstaller --clean --onefile --hidden-import=main  app/main.py 
+```
