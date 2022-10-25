@@ -86,7 +86,8 @@ async def read_item(item_id: str, q: Union[str, None] = None, short: bool = Fals
 
 # to get a string like this run:
 # openssl rand -hex 32
-SECRET_KEY = "b4158e52dd8e6c397436a49b235da89b93ee82bc9beaa82eaeffa43f3f649f9a"
+# TODO:Must change in production.
+SECRET_KEY = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
