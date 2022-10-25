@@ -1,7 +1,6 @@
-# pythonexample
 
+# FastAPI Example(python)
 
-# FastAPI fastapiapp
 
 ## install 
 
@@ -65,15 +64,11 @@ pip install sqlalchemy
 
 ```
 
-
 # pyinstaller
+
 ```
 pyinstaller --clean --onefile --hidden-import=main  app/main.py 
 ```
 
-
-
-
-# todo 
-
-static files.
+- todo
+  static files.
