@@ -27,10 +27,12 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
+
 # update用のrequest model
 class UserUpdate(BaseModel):
     id: int
     password: str
+
 
 class User(UserBase):
     id: int
@@ -39,6 +41,8 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+
+
 from typing import Union
 
 from pydantic import BaseModel
@@ -52,6 +56,7 @@ class ItemBase(BaseModel):
 class ItemCreate(ItemBase):
     pass
 
+
 class ItemUpdate(ItemBase):
     id: int
     title: str
@@ -59,7 +64,6 @@ class ItemUpdate(ItemBase):
 
 
 class Item(ItemBase):
-
     id: int
     owner_id: int
 

@@ -21,6 +21,7 @@ from pydantic import BaseModel
 
 from passlib.hash import bcrypt
 
+
 class ModelName(str, Enum):
     alexnet = "alexnet"
     resnet = "resnet"
@@ -34,7 +35,6 @@ class Item(BaseModel):
     tax: Union[float, None] = None
 
 
-
 app = FastAPI()
 logger = logging.getLogger("uvicorn")
 
@@ -43,11 +43,10 @@ fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"
 # app.mount("/static", StaticFiles(directory="static"), name="static")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
-
-
 
 
 @app.get("/models/{model_name}")
@@ -64,6 +63,7 @@ async def get_model(model_name: ModelName):
 @app.get("/items/")
 async def read_items(token: str = Depends(oauth2_scheme)):
     return {"token": token}
+
 
 # @app.get("/items/")
 # async def read_item(skip: int = 0, limit: int = 10):
@@ -82,8 +82,6 @@ async def read_item(item_id: str, q: Union[str, None] = None, short: bool = Fals
     return item
 
 
-
-
 # to get a string like this run:
 # openssl rand -hex 32
 # TODO:Must change in production.
@@ -94,7 +92,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 # Username: johndoe Password: secret
 # Username: anonymous Password: anonymous
 fake_users_db = {
-    "anonymous":{
+    "anonymous": {
         "username": "anonymous",
         "full_name": "anonymous",
         "email": "anonymous",
@@ -132,8 +130,6 @@ class UserInDB(User):
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
 
 
 def verify_password(plain_password, hashed_password):
@@ -217,21 +213,21 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
 
-
-
 @app.get("/users/me/items/")
 async def read_own_items(current_user: User = Depends(get_current_active_user)):
     return [{"item_id": "Foo", "owner": current_user.username}]
 
+
 # TODO: for test. to be deleted.
 @app.get("/passwordhash")
-async def read_own_items(password:str):
+async def read_own_items(password: str):
     hash = get_password_hash(password)
 
-    return [{"password":password,"hash": hash}]
+    return [{"password": password, "hash": hash}]
+
 
 @app.post("/items/")
-async def create_item(item: Item,current_user: User = Depends(get_current_active_user)):
+async def create_item(item: Item, current_user: User = Depends(get_current_active_user)):
     item.description += f"\n by {current_user.username}"
     return item
 
@@ -239,7 +235,7 @@ async def create_item(item: Item,current_user: User = Depends(get_current_active
 # cookie test
 
 @app.get("/cookietest")
-async def cookietest_get(response: Response,mycookiekey: Optional[str] = Cookie(None)):
+async def cookietest_get(response: Response, mycookiekey: Optional[str] = Cookie(None)):
     logger.info(f"cookietest_get")
     logging.getLogger("uvicorn.error").info("uvicorn.error test")
     logging.getLogger("uvicorn.access").info("uvicorn.access test")
@@ -256,9 +252,7 @@ async def cookietest_get(response: Response,mycookiekey: Optional[str] = Cookie(
     #     dtstr = datetime.today()
     #     response.set_cookie(key="mycookiekey", value=f"{dtstr}",path="/cookietest",httponly=True,secure=True)
 
-    return [{"reply_time":"aaa"}]
-
-
+    return [{"reply_time": "aaa"}]
 
 
 # pyinstallerの場合、__main__ で起動される。
@@ -266,6 +260,7 @@ async def cookietest_get(response: Response,mycookiekey: Optional[str] = Cookie(
 
 print(f"name = [{__name__}]")
 import sys, os
+
 if getattr(sys, 'frozen', False):
     # If the application is run as a bundle, the PyInstaller bootloader
     # extends the sys module by a flag frozen=True and sets the app

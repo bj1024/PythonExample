@@ -23,6 +23,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+
 def update_user(db: Session, user: schemas.UserUpdate):
     db_user = db.query(models.User).filter(models.User.id == user.id).first()
     db_user.hashed_password = user.password
@@ -47,7 +48,6 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     return db_item
 
 
-
 def update_user_item(db: Session, item: schemas.ItemUpdate):
     db_item = db.query(models.Item).filter(models.Item.id == item.id).first()
     db_item.title = item.title
@@ -55,5 +55,3 @@ def update_user_item(db: Session, item: schemas.ItemUpdate):
     db.commit()
     db.refresh(db_item)
     return db_item
-
-
