@@ -1,5 +1,11 @@
+import logging
+
 import uvicorn
 from enum import Enum
+
+from fastapi import Response
+from fastapi import Cookie
+from typing import Optional
 
 from fastapi.staticfiles import StaticFiles
 
@@ -30,6 +36,7 @@ class Item(BaseModel):
 
 
 app = FastAPI()
+logger = logging.getLogger("uvicorn")
 
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
 
@@ -228,6 +235,31 @@ async def create_item(item: Item,current_user: User = Depends(get_current_active
     return item
 
 
+# cookie test
+
+@app.get("/cookietest")
+async def cookietest_get(response: Response,mycookiekey: Optional[str] = Cookie(None)):
+    logger.info(f"cookietest_get")
+    logging.getLogger("uvicorn.error").info("uvicorn.error test")
+    logging.getLogger("uvicorn.access").info("uvicorn.access test")
+
+    if mycookiekey is not None:
+        # print(f"mycookiekey=[{mycookiekey}]")
+        mycookieval = mycookiekey
+        logger.info(f"mycookiekey=[{mycookieval}]")
+    else:
+        pass
+    #     logger.INFO(f"mycookiekey={mycookiekey}")
+    #
+    # else:
+    #     dtstr = datetime.today()
+    #     response.set_cookie(key="mycookiekey", value=f"{dtstr}",path="/cookietest",httponly=True,secure=True)
+
+    return [{"reply_time":"aaa"}]
+
+
+
+
 # pyinstallerの場合、__main__ で起動される。
 # python の場合、__main__ ,mainで起動される。
 
@@ -246,4 +278,5 @@ if __name__ == "__main__":
     # uvicorn.run("main:app", host="127.0.0.1", port=8000,reload=True)
     # uvicorn.run("sql_app.main:app", host="127.0.0.1", port=8000,reload=True)
     # uvicorn.run("sql_app.main:app", host="127.0.0.1", port=8000, reload=False)
-    uvicorn.run("__main__:app", host="127.0.0.1", port=8000, reload=False)
+    uvicorn.run("__main__:app", host="127.0.0.1", port=8000, reload=True)
+    # uvicorn.run("__main__:app", host="127.0.0.1", port=8000, reload=False)
